@@ -21,4 +21,6 @@ int main(int argc, char** argv) {
         }
         printf("%i", result[i]);
     }
+
+    free(result);
 }

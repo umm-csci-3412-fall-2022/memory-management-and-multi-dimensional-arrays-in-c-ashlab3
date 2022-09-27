@@ -42,12 +42,6 @@ int* array_merge(int num_arrays, int* sizes, int** values) {
     index += sizes[i];
   }
 
-  for (int i = 0; i < total + 1; i++){
-    if (i != 0) { printf(", "); }
-    printf("%i", buffer[i]);
-  }
-  printf("\n");
-
   // Get the unique elements of this array
   unsigned int unique_count = make_unique(buffer + 1, total);
 

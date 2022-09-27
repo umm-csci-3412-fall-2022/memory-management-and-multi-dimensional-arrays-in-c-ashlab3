@@ -2,12 +2,14 @@
 
 #include "array_merge.h"
 
-void arrays_match(int size, int a[], int b[]) {
+void arrays_match_consume_second(int size, int a[], int b[]) {
   int i;
 
   for (i=0; i<size; ++i) {
     ASSERT_EQ(b[i], a[i]);
   }
+
+  free(a);
 }
 
 TEST(ArrayMerge, Handle_empty_list) {
@@ -17,7 +19,7 @@ TEST(ArrayMerge, Handle_empty_list) {
   int* result;
 
   result = array_merge(0, sizes,  a);
-  arrays_match(1, result, expected);
+  arrays_match_consume_second(1, result, expected);
 }
 
 TEST(ArrayMerge, Handle_singleton_list) {
@@ -29,7 +31,7 @@ TEST(ArrayMerge, Handle_singleton_list) {
   int* result;
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(2, result, expected);
+  arrays_match_consume_second(2, result, expected);
 }
 
 TEST(ArrayMerge, Handle_one_longer_list) {
@@ -41,7 +43,7 @@ TEST(ArrayMerge, Handle_one_longer_list) {
   int* result;
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(8, result, expected);
+  arrays_match_consume_second(8, result, expected);
 }
 
 TEST(ArrayMerge, Handle_multiple_copies_of_longer_list) {
@@ -53,7 +55,7 @@ TEST(ArrayMerge, Handle_multiple_copies_of_longer_list) {
   int* result;
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(8, result, expected);
+  arrays_match_consume_second(8, result, expected);
 }
 
 TEST(ArrayMerge, Handle_multiple_copies_of_longer_list_different_orders) {
@@ -67,7 +69,7 @@ TEST(ArrayMerge, Handle_multiple_copies_of_longer_list_different_orders) {
   int* result;
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(8, result, expected);
+  arrays_match_consume_second(8, result, expected);
 }
 
 TEST(ArrayMerge, Handle_different_sizes) {
@@ -87,7 +89,11 @@ TEST(ArrayMerge, Handle_different_sizes) {
   }
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(11, result, expected);
+  arrays_match_consume_second(11, result, expected);
+
+  for (i = 0; i < num_arrays; i++) {
+    free(a[i]);
+  }
 }
 
 TEST(ArrayMerge, Handle_different_sizes_reversed) {
@@ -107,7 +113,11 @@ TEST(ArrayMerge, Handle_different_sizes_reversed) {
   }
 
   result = array_merge(num_arrays, sizes, a);
-  arrays_match(11, result, expected);
+  arrays_match_consume_second(11, result, expected);
+
+  for (i = 0; i < num_arrays; i++) {
+    free(a[i]);
+  }
 }
 
 int main(int argc, char* argv[]) {
